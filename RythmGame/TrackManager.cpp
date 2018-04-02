@@ -41,57 +41,15 @@ void TrackManager::Render()
 		(*it).second->Render();
 	}
 }
-void TrackManager::KeyDown(int keyCode)
+void TrackManager::KeyDown(eTrackNum keyTrack)
 {
-	switch (keyCode)
-	{
-	case SDLK_a:
-		_trackList[eTrackNum::SCRATCH]->KeyDown(); break;
-	case SDLK_s:
-		_trackList[eTrackNum::KEY1]->KeyDown(); break;
-	case SDLK_d:
-		_trackList[eTrackNum::KEY2]->KeyDown(); break;
-	case SDLK_f:
-		_trackList[eTrackNum::KEY3]->KeyDown(); break;
-	case SDLK_g:
-		_trackList[eTrackNum::KEY4]->KeyDown();	break;
-	case SDLK_h:
-		_trackList[eTrackNum::KEY5]->KeyDown();	break;
-	case SDLK_j:
-		_trackList[eTrackNum::KEY6]->KeyDown();	break;
-	case SDLK_k:
-		_trackList[eTrackNum::KEY7]->KeyDown();	break;
-	}
+	if(eTrackNum::TRACK_NONE !=keyTrack)
+		_trackList[keyTrack]->KeyDown();
 }
-void TrackManager::KeyUp(int keyCode)
+void TrackManager::KeyUp(eTrackNum keyTrack)
 {
-	switch (keyCode)
-	{
-	case SDLK_a:
-		_trackList[eTrackNum::SCRATCH]->KeyUp();
-		break;
-	case SDLK_s:
-		_trackList[eTrackNum::KEY1]->KeyUp();
-		break;
-	case SDLK_d:
-		_trackList[eTrackNum::KEY2]->KeyUp();
-		break;
-	case SDLK_f:
-		_trackList[eTrackNum::KEY3]->KeyUp();
-		break;
-	case SDLK_g:
-		_trackList[eTrackNum::KEY4]->KeyUp();
-		break;
-	case SDLK_h:
-		_trackList[eTrackNum::KEY5]->KeyUp();
-		break;
-	case SDLK_j:
-		_trackList[eTrackNum::KEY6]->KeyUp();
-		break;
-	case SDLK_k:
-		_trackList[eTrackNum::KEY7]->KeyUp();
-		break;
-	}
+	if (eTrackNum::TRACK_NONE != keyTrack)
+		_trackList[keyTrack]->KeyUp();
 }
 void TrackManager::TrackListInit()
 {

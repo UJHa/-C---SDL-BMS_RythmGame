@@ -8,21 +8,10 @@ class Font;
 class Wav;
 struct Mix_Chunk;
 //key
-//enum eTrackNum
-//{
-//	SCRATCH,
-//	KEY1,
-//	KEY2,
-//	KEY3,
-//	KEY4,
-//	KEY5,
-//	KEY6,
-//	KEY7,
-//	NONE,
-//};
 enum eTrackNum
 {
-	KEY1 = 1,
+	TRACK_NONE,
+	KEY1,
 	KEY2,
 	KEY3,
 	KEY4,
@@ -30,7 +19,6 @@ enum eTrackNum
 	SCRATCH,
 	KEY6 = 8,
 	KEY7,
-	TRACK_NONE,
 };
 class TrackManager
 {
@@ -45,8 +33,8 @@ public:
 	void Update(int deltaTime);
 	void Render();
 public:
-	void KeyDown(int keyCode);
-	void KeyUp(int keyCode);
+	void KeyDown(eTrackNum keyTrack);
+	void KeyUp(eTrackNum keyTrack);
 	//Init simplify functions
 public:
 	void TrackListInit();

@@ -61,7 +61,6 @@ int main(int argc, char* argv[])
 				if (SDL_KEYDOWN == sdlEvent.type)
 				{
 					SceneManager::GetInstance()->KeyDown(sdlEvent.key.keysym.sym);
-					
 				}
 			}
 			SceneManager::GetInstance()->Update(deltaTime);

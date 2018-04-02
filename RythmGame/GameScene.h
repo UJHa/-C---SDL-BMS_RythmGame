@@ -1,13 +1,11 @@
 #pragma once
-#include<vector>
+#include<map>
 #include "Scene.h"
-//#include "Track.h"
+using namespace std;
 class Sprite;
-class SDL_Texture;
-class Font;
 class TrackManager;
-class ParsingBMS;
 class NumbersSprite;
+enum eTrackNum;
 class GameScene : public Scene
 {
 private:
@@ -17,11 +15,16 @@ private:
 	Sprite* _trackListSprite;
 	Sprite* _collisionSprite;
 	NumbersSprite* _numberFontSprite;
+
+	map<int, eTrackNum> _trackKeyMap;
 public:
 	GameScene();
 	~GameScene();
 
 	void Init();
+
+	void InitTrackKey();
+	void InitJudgeSprite();
 	void Dinit();
 	void Update(int deltaTime);
 	void Render();

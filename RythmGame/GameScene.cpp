@@ -1,15 +1,11 @@
 #include<stdio.h>
 #include<string.h>
-#include<vector>
 #include "GameScene.h"
-#include "SDL_mixer.h"
-#include "GameSystem.h"
 #include "SettingGamePlay.h"
 #include "Sprite.h"
 #include "Font.h"
 #include "SceneManager.h"
 #include "TrackManager.h"
-#include "ParsingBMS.h"
 #include "Wav.h"
 #include "NumbersSprite.h"
 GameScene::GameScene()
@@ -43,12 +39,32 @@ void GameScene::Init()
 	_trackManager = new TrackManager();
 	_trackManager->Init();
 
-
 	_numberFontSprite = new NumbersSprite("numberfontspr.csv");
 	_numberFontSprite->Init();
 
 	SettingGamePlay::GetInstance()->SetNumberSprite(_numberFontSprite);
 
+	/*_keyboardEffectSprite = new KeyboardEffectSprite("");
+	_keyboardEffectSprite->Init();*/
+
+	InitJudgeSprite();
+
+	InitTrackKey();
+}
+void GameScene::InitTrackKey()
+{
+	_trackKeyMap.clear();
+	_trackKeyMap[SDLK_a] = eTrackNum::SCRATCH;
+	_trackKeyMap[SDLK_s] = eTrackNum::KEY1;
+	_trackKeyMap[SDLK_d] = eTrackNum::KEY2;
+	_trackKeyMap[SDLK_f] = eTrackNum::KEY3;
+	_trackKeyMap[SDLK_g] = eTrackNum::KEY4;
+	_trackKeyMap[SDLK_h] = eTrackNum::KEY5;
+	_trackKeyMap[SDLK_j] = eTrackNum::KEY6;
+	_trackKeyMap[SDLK_k] = eTrackNum::KEY7;
+}
+void GameScene::InitJudgeSprite()
+{
 	Sprite* greatSprite = new Sprite("judgeGreatspr.csv");
 	Sprite* goodSprite = new Sprite("judgeGoodspr.csv");
 	Sprite* badSprite = new Sprite("judgeBadspr.csv");
@@ -90,6 +106,7 @@ void GameScene::Dinit()
 		delete _numberFontSprite;
 		_numberFontSprite = NULL;
 	}
+	_trackKeyMap.clear();
 }
 void GameScene::Update(int deltaTime)
 {
@@ -142,9 +159,9 @@ void GameScene::Render()
 }
 void GameScene::KeyDown(int keyCode)
 {
-	_trackManager->KeyDown(keyCode);
+	_trackManager->KeyDown(_trackKeyMap[keyCode]);
 }
 void GameScene::KeyUp(int keyCode)
 {
-	_trackManager->KeyUp(keyCode);
+	_trackManager->KeyUp(_trackKeyMap[keyCode]);
 }
