@@ -8,6 +8,7 @@
 #include "TrackManager.h"
 #include "Wav.h"
 #include "NumbersSprite.h"
+#include "InputManager.h"
 GameScene::GameScene()
 {
 	_backgroundSprite = NULL;
@@ -159,9 +160,11 @@ void GameScene::Render()
 }
 void GameScene::KeyDown(int keyCode)
 {
+	InputManager::GetInstance()->KeyDown(keyCode);
 	_trackManager->KeyDown(_trackKeyMap[keyCode]);
 }
 void GameScene::KeyUp(int keyCode)
 {
+	InputManager::GetInstance()->KeyUp(keyCode);
 	_trackManager->KeyUp(_trackKeyMap[keyCode]);
 }

@@ -1,13 +1,14 @@
+#include <stdlib.h>
+#include<stdio.h>
+#include<string.h>
 #include "Track.h"
 #include "Note.h"
 #include "SettingGamePlay.h"
 #include "GameSystem.h"
 #include "Sprite.h"
-#include <stdlib.h>
-#include<stdio.h>
-#include<string.h>
 #include "Font.h"
-Track::Track(int trackInfo, string noteSpriteName)
+#include "InputManager.h"
+Track::Track(eTrackNum trackInfo, string noteSpriteName)
 {
 	_measureNoteList.clear();
 	_trackInfo = trackInfo;
@@ -46,6 +47,7 @@ void Track::Dinit()
 }
 void Track::Update(int deltaTime)
 {
+	UpdateKeyEvent();
 	UpdateMeasureIndex(deltaTime);
 	UpdateMeasureNoteList(deltaTime);
 	_boomSprite->Update(deltaTime);
@@ -234,7 +236,6 @@ void Track::SetJudgeTick()
 }
 void Track::SetNotePlace()
 {
-	_trackInfo;
 	vector<string> noteInfoList = SettingGamePlay::GetInstance()->GetNoteInfoMap()[_trackInfo];
 	map<string, Mix_Chunk*> wavMap = SettingGamePlay::GetInstance()->GetWavMap();
 	for (vector<string>::iterator it = noteInfoList.begin(); it != noteInfoList.end(); it++)
@@ -302,6 +303,21 @@ eJudge Track::ChangeJudgeText(int noteTime)
 	else
 	{
 		return eJudge::POOR;
+	}
+}
+void Track::UpdateKeyEvent()
+{
+	if (InputManager::GetInstance()->IsKeyDown(_trackInfo))//eKeyStatus::DOWN == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	{
+		printf("%d key Down!\n", _trackInfo);
+	}
+	else if (InputManager::GetInstance()->IsKeyHold(_trackInfo))//eKeyStatus::HOLD == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	{
+		printf("%d key Hold!\n", _trackInfo);
+	}
+	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	{
+		printf("%d key Up!\n", _trackInfo);
 	}
 }
 void Track::UpdateMeasureIndex(int deltaTime)

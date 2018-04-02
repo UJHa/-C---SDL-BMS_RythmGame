@@ -17,7 +17,8 @@ enum eTrackNum
 	KEY4,
 	KEY5,
 	SCRATCH,
-	KEY6 = 8,
+	NOT_USE,
+	KEY6,
 	KEY7,
 };
 class TrackManager

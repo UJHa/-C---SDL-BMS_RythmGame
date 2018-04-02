@@ -114,6 +114,9 @@
     <ClCompile Include="NumbersSprite.cpp">
       <Filter>소스 파일\Graphic</Filter>
     </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>소스 파일\System</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="NumbersSprite.h">
       <Filter>소스 파일\Graphic</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>소스 파일\System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

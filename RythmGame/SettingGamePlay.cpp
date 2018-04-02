@@ -2,7 +2,7 @@
 #include <io.h>
 #include "SettingGamePlay.h"
 #include "GameSystem.h"
-#include "SDL.h"
+#include<SDL.h>
 #include "Font.h"
 #include "Wav.h"
 #include "time.h"

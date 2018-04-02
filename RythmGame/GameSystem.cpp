@@ -1,6 +1,6 @@
 #include "GameSystem.h"
 #include <stdio.h>
-#include "SDL.h"
+#include<SDL.h>
 #include "Font.h"
 GameSystem* GameSystem::_instance = NULL;
 GameSystem* GameSystem::GetInstance()

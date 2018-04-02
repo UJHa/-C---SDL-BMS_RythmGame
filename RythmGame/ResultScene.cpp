@@ -2,7 +2,7 @@
 #include<stdio.h>
 #include"SceneManager.h"
 #include"GameSystem.h"
-#include "SDL.h"
+#include<SDL.h>
 #include "Font.h"
 #include "SettingGamePlay.h"
 ResultScene::ResultScene()

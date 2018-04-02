@@ -7,6 +7,7 @@ using namespace std;
 class Note;
 class Sprite;
 class Font;
+enum eTrackNum;
 enum eJudge
 {
 	GREAT,
@@ -27,13 +28,13 @@ private:
 
 	//int _trackWidth;
 	int _testMaxMeasureIndex;
-	int _trackInfo;
+	eTrackNum _trackInfo;
 	string _noteSpriteName;
 
 	int _updateDuration;
 	int _updateIndex;
 public:
-	Track(int trackInfo, string noteSpriteName);
+	Track(eTrackNum trackInfo, string noteSpriteName);
 	~Track();
 	void Init();
 	void Dinit();
@@ -62,6 +63,7 @@ public:
 	eJudge ChangeJudgeText(int noteTime);
 	//update list
 public:
+	void UpdateKeyEvent();
 	void UpdateMeasureIndex(int deltaTime);
 	void UpdateMeasureNoteList(int deltaTime);
 	//set font

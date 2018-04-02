@@ -2,7 +2,7 @@
 #include "TitleScene.h"
 #include "GameSystem.h"
 #include "SceneManager.h"
-#include "SDL.h"
+#include<SDL.h>
 #include "Font.h"
 #include "SettingGamePlay.h"
 #include "MusicList.h"
