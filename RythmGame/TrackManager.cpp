@@ -41,16 +41,6 @@ void TrackManager::Render()
 		(*it).second->Render();
 	}
 }
-void TrackManager::KeyDown(eTrackNum keyTrack)
-{
-	if(eTrackNum::TRACK_NONE !=keyTrack)
-		_trackList[keyTrack]->KeyDown();
-}
-void TrackManager::KeyUp(eTrackNum keyTrack)
-{
-	if (eTrackNum::TRACK_NONE != keyTrack)
-		_trackList[keyTrack]->KeyUp();
-}
 void TrackManager::TrackListInit()
 {
 	int posY = GameSystem::GetInstance()->GetHeight() / 2;

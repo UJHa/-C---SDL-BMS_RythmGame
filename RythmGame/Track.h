@@ -40,15 +40,6 @@ public:
 	void Dinit();
 	void Update(int deltaTime);
 	void Render();
-	//keySet
-private:
-	//bool _isKeyDown;
-public:
-	void KeyDown();
-	void KeyUp();
-	void JudgeDownEvent();
-	void JudgeUpEvent();
-
 	//init 
 private:
 	int _judgeBadStartTick;
@@ -66,6 +57,4 @@ public:
 	void UpdateKeyEvent();
 	void UpdateMeasureIndex(int deltaTime);
 	void UpdateMeasureNoteList(int deltaTime);
-	//set font
-	void SetFont();
 };

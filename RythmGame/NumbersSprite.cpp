@@ -9,13 +9,24 @@ NumbersSprite::NumbersSprite(string fileName) : Sprite(fileName)
 NumbersSprite::~NumbersSprite()
 {
 }
+void NumbersSprite::Init()
+{
+	Sprite::Init();
+	for (int i = 0; i < 10; i++)
+	{
+		Texture* texture = new Texture(_fileName.c_str());
+		texture->CopyTexture(_textureFrames[0]);
+		texture->SetNumberTexture(i);
+		_numberTextureList.push_back(*texture);
+	}
+}
 void NumbersSprite::Render()
 {
 	if (false == _isPlay)
 		return;
-	for (vector<Texture*>::iterator it = _numberTextureList.begin(); it != _numberTextureList.end(); it++)
+	for (vector<Texture>::iterator it = _renderTextureList.begin(); it != _renderTextureList.end(); it++)
 	{
-		(*it)->Render();
+		(*it).Render();
 	}
 }
 void NumbersSprite::Update(int deltaTime)
@@ -33,20 +44,12 @@ void NumbersSprite::Update(int deltaTime)
 			if (0 == _frame)
 			{
 				_isPlay = false;
-				_numberTextureList.clear();
+				_renderTextureList.clear();
 			}
 		}
 	}
 	texture = _textureFrames[_frame];
 	texture->SetPosition(_x, _y);
-
-	int textureLength = texture->GetRenderWidth() / 10;
-	int textureStartPositionX = -(_numberTextureList.size() - 1) * textureLength;
-	textureStartPositionX /= 2;
-	for (int i = 0; i < _numberTextureList.size(); i++)
-	{
-		_numberTextureList[i]->SetPosition(_x + textureStartPositionX + i * textureLength , _y);
-	}
 }
 void NumbersSprite::SetPosition(int x, int y)
 {
@@ -59,19 +62,24 @@ void NumbersSprite::SetPosition(int x, int y)
 void NumbersSprite::SetNumber(int number)
 {
 	_frameDuration = 0;
-	_numberTextureList.clear();
-	vector<Texture*> reverseList;
+	_renderTextureList.clear();
+	vector<int> containCheck;
 	while (0 != number)
 	{
-		Texture* texture = new Texture();
+		containCheck.push_back(number % 10);
+		/*Texture* texture = new Texture(_fileName.c_str());
 		texture->CopyTexture(_textureFrames[0]);
-		texture->SetNumberTexture(number % 10);
-		reverseList.push_back(texture);
+		texture->SetNumberTexture(number % 10);*/
+		_renderTextureList.push_back(_numberTextureList[number % 10]);
 		number = number / 10;
 	}
-	for (int i = 0; i < reverseList.size(); i++)
+	int textureLength = _textureFrames[0]->GetRenderWidth() / 10;
+	int textureStartPositionX = (_renderTextureList.size() - 1) * textureLength;
+	textureStartPositionX /= 2;
+	for (int i = 0; i < _renderTextureList.size(); i++)
 	{
-		_numberTextureList.push_back(reverseList[reverseList.size() - 1 - i]);
+		_renderTextureList[i].SetPosition(_x + textureStartPositionX - i * textureLength, _y);
 	}
+
 	_isPlay = true;
 }

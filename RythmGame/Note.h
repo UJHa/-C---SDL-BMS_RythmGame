@@ -49,4 +49,6 @@ public:
 	bool IsJudge();
 	float GetSecStart();
 	Mix_Chunk* GetMusicBGM();
+
+	bool IsKeyDownJudgeSuccess();
 };

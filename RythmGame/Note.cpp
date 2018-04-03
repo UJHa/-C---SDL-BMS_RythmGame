@@ -166,3 +166,17 @@ Mix_Chunk* Note::GetMusicBGM()
 {
 	return _musicBGM;
 }
+bool Note::IsKeyDownJudgeSuccess()
+{
+	//WavPlay();
+	if (eNoteStatus::NOMMAL_NOTE == _eNoteStatus)
+	{
+		return true;
+	}
+	else if (eNoteStatus::LONG_NOTE == _eNoteStatus)
+	{
+		AdjustmentHeight();
+		Judged();
+		return false;
+	}
+}

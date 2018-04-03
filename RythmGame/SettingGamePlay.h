@@ -57,12 +57,6 @@ public:
 public:
 	float GetGameLoadTime() { return 1.0f; }
 	int GetCollisionDeltaLine();
-	//Setting font
-private:
-	std::vector<Font*> _fontList;
-public:
-	void AppendFontList(Font* font) { _fontList.push_back(font); }
-	std::vector<Font*> GetFontList() { return _fontList; }
 	//Setting BMS Parsing
 private:
 	vector<string> _bmsInfo;

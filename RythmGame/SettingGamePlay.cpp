@@ -54,15 +54,6 @@ void SettingGamePlay::Dinit()
 	_wavSecMap.clear();
 
 	_judgeFontSpriteList.clear();
-	for (vector<Font*>::iterator it = _fontList.begin(); it != _fontList.end(); it++)
-	{
-		if (NULL != (*it))
-		{
-			delete (*it);
-			(*it) = NULL;
-		}
-	}
-	_fontList.clear();
 	for (vector<Wav*>::iterator it = _autoWavList.begin(); it != _autoWavList.end(); it++)
 	{
 		if (NULL != (*it))

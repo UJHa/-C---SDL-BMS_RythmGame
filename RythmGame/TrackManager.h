@@ -33,9 +33,6 @@ public:
 	void Dinit();
 	void Update(int deltaTime);
 	void Render();
-public:
-	void KeyDown(eTrackNum keyTrack);
-	void KeyUp(eTrackNum keyTrack);
 	//Init simplify functions
 public:
 	void TrackListInit();

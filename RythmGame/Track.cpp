@@ -50,7 +50,6 @@ void Track::Update(int deltaTime)
 	UpdateKeyEvent();
 	UpdateMeasureIndex(deltaTime);
 	UpdateMeasureNoteList(deltaTime);
-	SetFont();
 	_boomSprite->Update(deltaTime);
 }
 void Track::Render()
@@ -65,158 +64,6 @@ void Track::Render()
 		}
 	}
 	_boomSprite->Render();
-}
-void Track::KeyDown()
-{
-	/*if (_isKeyDown)
-		return;
-	_isKeyDown = true;*/
-
-	int index = 0;
-	while (0 == _measureNoteList[index].size())
-	{
-		index++;
-		if (_maxMeasureIndex < index)
-			break;
-	}
-	list<Note*>::iterator itr = _measureNoteList[index].begin();
-	if (itr == _measureNoteList[index].end())	//null 체크
-		return;
-	int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
-
-	if (noteTime < _judgeBadStartTick)
-	{
-		_judge = eJudge::NONE;
-	}
-	else
-	{
-		JudgeDownEvent();
-	}
-}
-void Track::KeyUp()
-{
-	int index = 0;
-	while (0 == _measureNoteList[index].size())
-	{
-		index++;
-		if (_maxMeasureIndex < index)
-			break;
-	}
-	list<Note*>::iterator itr = _measureNoteList[index].begin();
-	if (itr == _measureNoteList[index].end())	//null 체크
-		return;
-	if ((*itr)->GetNoteStatus() == eNoteStatus::NOMMAL_NOTE)
-	{
-	}
-	else if ((*itr)->GetNoteStatus() == eNoteStatus::LONG_NOTE)
-	{
-		if ((*itr)->IsJudge())
-		{
-			JudgeUpEvent();
-		}
-	}
-	//_isKeyDown = false;
-}
-void Track::JudgeDownEvent()
-{
-	int index = 0;
-	while (0 == _measureNoteList[index].size())
-	{
-		index++;
-		if (_maxMeasureIndex < index)
-			break;
-	}
-	list<Note*>::iterator itr = _measureNoteList[index].begin();
-	int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
-	_judge = ChangeJudgeText(noteTime);
-
-	if (_judge < eJudge::NONE)
-	{
-		SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
-		SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
-	}
-	if ((*itr)->GetNoteStatus() == eNoteStatus::NOMMAL_NOTE)
-	{
-		switch (_judge)
-		{
-		case eJudge::GREAT:
-		case eJudge::GOOD:
-			SettingGamePlay::GetInstance()->AddCombo();
-			_boomSprite->Play();
-			(*itr)->WavPlay();
-			_measureNoteList[index].remove(*itr);
-			break;
-		case eJudge::BAD:
-		case eJudge::POOR:
-			SettingGamePlay::GetInstance()->ResetCombo();
-			_measureNoteList[index].remove(*itr);
-			break;
-		case eJudge::NONE:
-			break;
-		}
-	}
-	else if ((*itr)->GetNoteStatus() == eNoteStatus::LONG_NOTE)
-	{
-		if ((*itr)->IsJudge())	//롱노트 status일때 코드
-		{
-			_judge = eJudge::GREAT;
-		}
-		switch (_judge)
-		{
-		case eJudge::GREAT:
-		case eJudge::GOOD:
-			SettingGamePlay::GetInstance()->AddCombo();
-			_boomSprite->Play();
-			(*itr)->AdjustmentHeight();
-			(*itr)->Judged();
-			//_isKeyDown = false;
-			break;
-		case eJudge::BAD:
-		case eJudge::POOR:
-			SettingGamePlay::GetInstance()->ResetCombo();
-			_measureNoteList[index].remove(*itr);
-			//_isKeyDown = true;
-			break;
-		case eJudge::NONE:
-			//_isKeyDown = true;
-			break;
-		}
-	}
-}
-void Track::JudgeUpEvent()
-{
-	int index = 0;
-	while (0 == _measureNoteList[index].size())
-	{
-		index++;
-		if (_maxMeasureIndex < index)
-			break;
-	}
-	list<Note*>::iterator itr = _measureNoteList[index].begin();
-	int noteTime = (*itr)->GetNoteTime();
-	_judge = ChangeJudgeText(noteTime);
-
-	if (_judge < eJudge::NONE)
-	{
-		SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
-		SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
-	}
-	switch (_judge)
-	{
-	case eJudge::GREAT:
-	case eJudge::GOOD:
-		SettingGamePlay::GetInstance()->AddCombo();
-		_boomSprite->Play();
-		_measureNoteList[index].remove(*itr);
-		break;
-	case eJudge::BAD:
-	case eJudge::POOR:
-		SettingGamePlay::GetInstance()->ResetCombo();
-		_measureNoteList[index].remove(*itr);
-		break;
-	case eJudge::NONE:
-		break;
-	}
 }
 void Track::SetJudgeTick()
 {
@@ -301,11 +148,11 @@ eJudge Track::ChangeJudgeText(int noteTime)
 	}
 	else if( noteTime < _judgeBadStartTick )	//여기 조건 계산하기
 	{
-		return eJudge::POOR;
+		return eJudge::NONE;
 	}
 	else
 	{
-		return eJudge::NONE;
+		return eJudge::POOR;
 	}
 }
 void Track::UpdateKeyEvent()
@@ -317,99 +164,71 @@ void Track::UpdateKeyEvent()
 		if (_maxMeasureIndex < startMeasureIndex)
 			break;
 	}
+	list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
+	if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
+		return;
+
 	if (InputManager::GetInstance()->IsKeyDown(_trackInfo))//eKeyStatus::DOWN == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
 		printf("%d key Down!\n", _trackInfo);
-		/*if (_isKeyDown)
-			return;
-		_isKeyDown = true;*/
 
-		list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
-			return;
 		int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
-
 		_judge = ChangeJudgeText(noteTime);
-		if (noteTime < _judgeBadStartTick)
-		{
-			//_judge = eJudge::NONE;
-		}
-		else
-		{
-			//list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-			//int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
-			//_judge = ChangeJudgeText(noteTime);
 
-			if (eJudge::NONE != _judge)
-			{
-				SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
-				SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
-			}
-			if ((*itr)->GetNoteStatus() == eNoteStatus::NOMMAL_NOTE)
-			{
-				switch (_judge)
-				{
-				case eJudge::GREAT:
-				case eJudge::GOOD:
-					SettingGamePlay::GetInstance()->AddCombo();
-					_boomSprite->Play();
-					(*itr)->WavPlay();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::BAD:
-				case eJudge::POOR:
-					SettingGamePlay::GetInstance()->ResetCombo();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::NONE:
-					break;
-				}
-			}
-			else if ((*itr)->GetNoteStatus() == eNoteStatus::LONG_NOTE)
-			{
-				if ((*itr)->IsJudge())	//롱노트 status일때 코드
-				{
-					_judge = eJudge::GREAT;
-				}
-				switch (_judge)
-				{
-				case eJudge::GREAT:
-				case eJudge::GOOD:
-					SettingGamePlay::GetInstance()->AddCombo();
-					_boomSprite->Play();
-					(*itr)->AdjustmentHeight();
-					(*itr)->Judged();
-					//_isKeyDown = false;
-					break;
-				case eJudge::BAD:
-				case eJudge::POOR:
-					SettingGamePlay::GetInstance()->ResetCombo();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					//_isKeyDown = true;
-					break;
-				case eJudge::NONE:
-					//_isKeyDown = true;
-					break;
-				}
-			}
+		if (eJudge::NONE == _judge)
+			return;
+
+		SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
+		SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
+		
+		bool isRemoveCheck = true;
+		switch (_judge)
+		{
+		case eJudge::GREAT:
+		case eJudge::GOOD:
+			SettingGamePlay::GetInstance()->AddCombo();
+			_boomSprite->Play();
+			(*itr)->WavPlay();
+			isRemoveCheck = (*itr)->IsKeyDownJudgeSuccess();
+			break;
+		case eJudge::BAD:
+		case eJudge::POOR:
+			SettingGamePlay::GetInstance()->ResetCombo();
+			isRemoveCheck = true;
+			break;
+		}
+		if (isRemoveCheck)
+		{
+			_deleteNoteList.push_back(*itr);
+			_measureNoteList[startMeasureIndex].remove(*itr);
 		}
 	}
 	else if (InputManager::GetInstance()->IsKeyHold(_trackInfo))//eKeyStatus::HOLD == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
 		printf("%d key Hold!\n", _trackInfo);
-		list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
-			return;
-		int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
 
-		if (noteTime < _judgeBadStartTick)
+		if ((*itr)->IsJudge())	//롱노트 status일때 코드
 		{
-			_judge = eJudge::NONE;
+			_judge = eJudge::GREAT;
+			SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
+			SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
+			
+			SettingGamePlay::GetInstance()->AddCombo();
+			_boomSprite->Play();
+			(*itr)->AdjustmentHeight();
 		}
 		else
 		{
-			list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-			int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
+			_judge = eJudge::NONE;
+		}
+	}
+	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	{
+		printf("%d key Up!\n", _trackInfo);
+
+		int noteTime = (*itr)->GetNoteTime();
+		if ((*itr)->IsJudge())
+		{
 			_judge = ChangeJudgeText(noteTime);
 
 			if (eJudge::NONE != _judge)
@@ -417,96 +236,35 @@ void Track::UpdateKeyEvent()
 				SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
 				SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
 			}
-			if ((*itr)->GetNoteStatus() == eNoteStatus::NOMMAL_NOTE)
+			switch (_judge)
 			{
-				switch (_judge)
-				{
-				case eJudge::GREAT:
-				case eJudge::GOOD:
-					SettingGamePlay::GetInstance()->AddCombo();
-					_boomSprite->Play();
-					(*itr)->WavPlay();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::BAD:
-				case eJudge::POOR:
-					SettingGamePlay::GetInstance()->ResetCombo();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::NONE:
-					break;
-				}
+			case eJudge::GREAT:
+			case eJudge::GOOD:
+				SettingGamePlay::GetInstance()->AddCombo();
+				_boomSprite->Play();
+				break;
+			case eJudge::BAD:
+			case eJudge::POOR:
+				SettingGamePlay::GetInstance()->ResetCombo();
+				break;
 			}
-			else if ((*itr)->GetNoteStatus() == eNoteStatus::LONG_NOTE)
-			{
-				if ((*itr)->IsJudge())	//롱노트 status일때 코드
-				{
-					_judge = eJudge::GREAT;
-				}
-				switch (_judge)
-				{
-				case eJudge::GREAT:
-				case eJudge::GOOD:
-					SettingGamePlay::GetInstance()->AddCombo();
-					_boomSprite->Play();
-					(*itr)->AdjustmentHeight();
-					(*itr)->Judged();
-					//_isKeyDown = false;
-					break;
-				case eJudge::BAD:
-				case eJudge::POOR:
-					SettingGamePlay::GetInstance()->ResetCombo();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					//_isKeyDown = true;
-					break;
-				case eJudge::NONE:
-					//_isKeyDown = true;
-					break;
-				}
-			}
+			_deleteNoteList.push_back(*itr);
+			_measureNoteList[startMeasureIndex].remove(*itr);
 		}
 	}
-	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	else
 	{
-		printf("%d key Up!\n", _trackInfo);
-		list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
-			return;
-		if ((*itr)->GetNoteStatus() == eNoteStatus::NOMMAL_NOTE)
+		if (_judgeBadEndTick <= (*itr)->GetNoteTime())
 		{
-		}
-		else if ((*itr)->GetNoteStatus() == eNoteStatus::LONG_NOTE)
-		{
-			if ((*itr)->IsJudge())
-			{
-				list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-				int noteTime = (*itr)->GetNoteTime();
-				_judge = ChangeJudgeText(noteTime);
+			_judge = eJudge::POOR;
+			SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
+			SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
 
-				if (_judge < eJudge::NONE)
-				{
-					SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
-					SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
-				}
-				switch (_judge)
-				{
-				case eJudge::GREAT:
-				case eJudge::GOOD:
-					SettingGamePlay::GetInstance()->AddCombo();
-					_boomSprite->Play();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::BAD:
-				case eJudge::POOR:
-					SettingGamePlay::GetInstance()->ResetCombo();
-					_measureNoteList[startMeasureIndex].remove(*itr);
-					break;
-				case eJudge::NONE:
-					break;
-				}
-			}
+			SettingGamePlay::GetInstance()->ResetCombo();
+
+			_deleteNoteList.push_back(*itr);
+			_measureNoteList[startMeasureIndex].remove(*itr);
 		}
-		_isKeyDown = false;
 	}
 }
 void Track::UpdateMeasureIndex(int deltaTime)
@@ -532,7 +290,6 @@ void Track::UpdateMeasureNoteList(int deltaTime)
 {
 	for (int i = 1; i < 3 + _updateIndex; i++)
 	{
-		list<Note*> eraseNoteList;
 		for (list<Note*>::iterator itr = _measureNoteList[i].begin();
 			itr != _measureNoteList[i].end();
 			itr++)
@@ -541,33 +298,6 @@ void Track::UpdateMeasureNoteList(int deltaTime)
 			{
 				(*itr)->Update(deltaTime);
 			}
-			if (_judgeBadEndTick <= (*itr)->GetNoteTime())
-			{
-				eraseNoteList.push_back(*itr);
-				SettingGamePlay::GetInstance()->ResetCombo();
-
-				_judge = eJudge::POOR;
-				SettingGamePlay::GetInstance()->GetJudgeFont(_judge)->Play();
-				SettingGamePlay::GetInstance()->AddJudgeCount(_judge);
-			}
-		}
-		if (0 != eraseNoteList.size())
-		{
-			list<Note*>::iterator itr = eraseNoteList.begin();
-			while (itr != eraseNoteList.end())
-			{
-				_deleteNoteList.push_back(*itr);
-				_measureNoteList[i].remove(*itr);
-				itr++;
-			}
 		}
 	}
-}
-void Track::SetFont()
-{
-	char text[256];
-	sprintf(text, "Combo %04d Score 0000", SettingGamePlay::GetInstance()->GetComboNum());
-	SettingGamePlay::GetInstance()->GetFontList()[0]->SetText(text, 255, 255, 255);
-
-	_judge = NONE;
 }

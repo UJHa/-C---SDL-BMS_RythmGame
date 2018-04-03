@@ -27,11 +27,6 @@ void GameScene::Init()
 	_backgroundSprite = new Sprite("backgroundGamespr.csv");
 	_backgroundSprite->Init();
 
-	Font* scoreFont = new Font("arialbd.ttf", 24);
-	scoreFont->SetText("Combo 0000 Score 0000", 255, 255, 255);
-	scoreFont->SetPosition(scoreFont->GetRenderWidth() / 2, scoreFont->GetRenderHeight() / 2);
-	SettingGamePlay::GetInstance()->AppendFontList(scoreFont);
-
 	_trackListSprite = new Sprite("trackListspr.csv");
 	_trackListSprite->Init();
 
@@ -122,11 +117,6 @@ void GameScene::Update(int deltaTime)
 
 	if (_gameDuration <= SettingGamePlay::GetInstance()->GetGameTimeTick() + SettingGamePlay::GetInstance()->GetGameLoadTime() * 1000 + 2000)
 	{
-		std::vector<Font*> fontList = SettingGamePlay::GetInstance()->GetFontList();
-		for (std::vector<Font*>::iterator it = fontList.begin(); it != fontList.end(); it++)
-		{
-			(*it)->Update(deltaTime);
-		}
 		_trackManager->Update(deltaTime);
 		std::vector<Wav*> wavList = SettingGamePlay::GetInstance()->GetWavList();
 		for (std::vector<Wav*>::iterator it = wavList.begin(); it != wavList.end(); it++)
@@ -152,19 +142,12 @@ void GameScene::Render()
 	{
 		SettingGamePlay::GetInstance()->GetJudgeFont(i)->Render();
 	}
-	std::vector<Font*> fontList = SettingGamePlay::GetInstance()->GetFontList();
-	for (std::vector<Font*>::iterator it = fontList.begin(); it != fontList.end(); it++)
-	{
-		(*it)->Render();
-	}
 }
 void GameScene::KeyDown(int keyCode)
 {
 	InputManager::GetInstance()->KeyDown(keyCode);
-	_trackManager->KeyDown(_trackKeyMap[keyCode]);
 }
 void GameScene::KeyUp(int keyCode)
 {
 	InputManager::GetInstance()->KeyUp(keyCode);
-	_trackManager->KeyUp(_trackKeyMap[keyCode]);
 }

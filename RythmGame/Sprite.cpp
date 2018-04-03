@@ -21,7 +21,6 @@ void Sprite::Init()
 	char filePath[256];
 	sprintf(filePath, "../Resources/%s", _fileName.c_str());
 
-	list<Texture*> textureFramesList;
 
 	FILE* fp = fopen(filePath, "r");
 	if (NULL == fp)
@@ -42,6 +41,7 @@ void Sprite::Init()
 		token = strtok(NULL, ",");
 	}
 
+	list<Texture*> textureFramesList;
 	char* textureName;
 	float scaleWidth, scaleHeight;
 	int animationSpeed = 0;
