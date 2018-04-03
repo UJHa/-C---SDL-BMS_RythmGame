@@ -27,7 +27,7 @@ private:
 	eJudge _judge;
 
 	//int _trackWidth;
-	int _testMaxMeasureIndex;
+	int _maxMeasureIndex;
 	eTrackNum _trackInfo;
 	string _noteSpriteName;
 
@@ -42,7 +42,7 @@ public:
 	void Render();
 	//keySet
 private:
-	bool _isKeyDown;
+	//bool _isKeyDown;
 public:
 	void KeyDown();
 	void KeyUp();

@@ -45,7 +45,8 @@ void InputManager::KeyDown(int keyCode)
 void InputManager::KeyUp(int keyCode)
 {
 	eTrackNum trackNum = _trackKeyMap[keyCode];
-	if (eTrackNum::TRACK_NONE != trackNum)
+	if (eTrackNum::TRACK_NONE != trackNum
+		&& eKeyStatus::HOLD == _trackKeyStatus[trackNum])
 		_trackKeyStatus[trackNum] = eKeyStatus::UP;
 }
 eKeyStatus InputManager::GetKeyStatus(eTrackNum trackNum)
