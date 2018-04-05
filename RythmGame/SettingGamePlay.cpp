@@ -230,7 +230,7 @@ bool SettingGamePlay::ParsingBMS(int deltaTime)
 			return true;
 		}
 		int oneTimeDelta = SDL_GetTicks() - startTick;
-		if (deltaTime <= oneTimeDelta)	//16이 델타값
+		if (deltaTime - 3 <= oneTimeDelta)	//델타값 : 한번의 업데이트 시간
 		{
 			printf("ParsingBMS 아직 읽는중\n");
 			return false;

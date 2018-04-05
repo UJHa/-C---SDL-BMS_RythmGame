@@ -1,5 +1,4 @@
 #include "NumbersSprite.h"
-#include "DLinkedList.h"
 #include "Texture.h"
 NumbersSprite::NumbersSprite(string fileName) : Sprite(fileName)
 {
@@ -67,9 +66,7 @@ void NumbersSprite::SetNumber(int number)
 	while (0 != number)
 	{
 		containCheck.push_back(number % 10);
-		/*Texture* texture = new Texture(_fileName.c_str());
-		texture->CopyTexture(_textureFrames[0]);
-		texture->SetNumberTexture(number % 10);*/
+
 		_renderTextureList.push_back(_numberTextureList[number % 10]);
 		number = number / 10;
 	}

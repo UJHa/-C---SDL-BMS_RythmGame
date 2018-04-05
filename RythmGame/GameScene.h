@@ -15,15 +15,11 @@ private:
 	Sprite* _trackListSprite;
 	Sprite* _collisionSprite;
 	NumbersSprite* _numberFontSprite;
-
-	map<int, eTrackNum> _trackKeyMap;
 public:
 	GameScene();
 	~GameScene();
 
 	void Init();
-
-	void InitTrackKey();
 	void InitJudgeSprite();
 	void Dinit();
 	void Update(int deltaTime);

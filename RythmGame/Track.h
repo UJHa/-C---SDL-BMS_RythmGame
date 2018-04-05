@@ -6,6 +6,7 @@
 using namespace std;
 class Note;
 class Sprite;
+class KeyboardEffectSprite;
 class Font;
 enum eTrackNum;
 enum eJudge
@@ -23,6 +24,8 @@ private:
 	list<Note *> _deleteNoteList;
 
 	Sprite* _boomSprite;
+	KeyboardEffectSprite* _keyboardEffectSprite;
+
 	map<int, list<Note*>> _measureNoteList;
 	eJudge _judge;
 

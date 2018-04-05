@@ -137,6 +137,10 @@ void Sprite::Play()
 	_frame = 0;
 	_isPlay = true;
 }
+void Sprite::Stop()
+{
+	_isPlay = false;
+}
 void Sprite::SetHeight(int height)
 {
 	Texture* texture = _textureFrames[_frame];

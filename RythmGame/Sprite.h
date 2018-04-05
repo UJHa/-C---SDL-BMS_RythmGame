@@ -30,6 +30,7 @@ public:
 	virtual void Update(int deltaTime);
 	virtual void SetPosition(int x, int y);
 	void Play();
+	void Stop();
 
 	void SetHeight(int height);
 	void SetPivotY(float pivotY);

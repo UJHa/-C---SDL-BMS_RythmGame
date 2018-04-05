@@ -151,6 +151,7 @@
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="GameSystem.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="KeyboardEffectSprite.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
     <ClCompile Include="LogoScene.cpp" />
     <ClCompile Include="main.cpp" />
@@ -176,6 +177,7 @@
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="GameSystem.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="KeyboardEffectSprite.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="LogoScene.h" />
     <ClInclude Include="MusicList.h" />

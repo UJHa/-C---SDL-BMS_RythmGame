@@ -117,6 +117,9 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>소스 파일\System</Filter>
     </ClCompile>
+    <ClCompile Include="KeyboardEffectSprite.cpp">
+      <Filter>소스 파일\Graphic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Sprite.h">
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>소스 파일\System</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyboardEffectSprite.h">
+      <Filter>소스 파일\Graphic</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

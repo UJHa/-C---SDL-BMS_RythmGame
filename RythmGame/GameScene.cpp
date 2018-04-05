@@ -40,24 +40,7 @@ void GameScene::Init()
 
 	SettingGamePlay::GetInstance()->SetNumberSprite(_numberFontSprite);
 
-	/*_keyboardEffectSprite = new KeyboardEffectSprite("");
-	_keyboardEffectSprite->Init();*/
-
 	InitJudgeSprite();
-
-	InitTrackKey();
-}
-void GameScene::InitTrackKey()
-{
-	_trackKeyMap.clear();
-	_trackKeyMap[SDLK_a] = eTrackNum::SCRATCH;
-	_trackKeyMap[SDLK_s] = eTrackNum::KEY1;
-	_trackKeyMap[SDLK_d] = eTrackNum::KEY2;
-	_trackKeyMap[SDLK_f] = eTrackNum::KEY3;
-	_trackKeyMap[SDLK_g] = eTrackNum::KEY4;
-	_trackKeyMap[SDLK_h] = eTrackNum::KEY5;
-	_trackKeyMap[SDLK_j] = eTrackNum::KEY6;
-	_trackKeyMap[SDLK_k] = eTrackNum::KEY7;
 }
 void GameScene::InitJudgeSprite()
 {
@@ -102,7 +85,6 @@ void GameScene::Dinit()
 		delete _numberFontSprite;
 		_numberFontSprite = NULL;
 	}
-	_trackKeyMap.clear();
 }
 void GameScene::Update(int deltaTime)
 {

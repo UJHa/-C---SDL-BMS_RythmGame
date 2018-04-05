@@ -8,6 +8,7 @@
 #include "Sprite.h"
 #include "Font.h"
 #include "InputManager.h"
+#include "KeyboardEffectSprite.h"
 Track::Track(eTrackNum trackInfo, string noteSpriteName)
 {
 	_measureNoteList.clear();
@@ -18,19 +19,27 @@ Track::Track(eTrackNum trackInfo, string noteSpriteName)
 	_noteSpriteName = noteSpriteName;
 }
 
-Track::~Track()
+Track::~Track() 
 {
 }
 void Track::Init()
 {
 	//_isKeyDown = false;
-	SetJudgeTick();
+	SetJudgeTick(); 
 	SetNotePlace();
 	
 	char boomSpriteName[256];
 	sprintf(boomSpriteName, "noteBoomspr%d.csv", _trackInfo);
 	_boomSprite = new Sprite(boomSpriteName);
 	_boomSprite->Init();
+	 
+	/*_keyboardEffectSprite = new KeyboardEffectSprite("keyboardspr.csv");
+	_keyboardEffectSprite->Init();
+	_keyboardEffectSprite->SetPosition(225, 684);*/
+	char keyboardSpriteName[256];
+	sprintf(keyboardSpriteName, "keyboardspr%d.csv", _trackInfo);
+	_keyboardEffectSprite = new KeyboardEffectSprite(keyboardSpriteName);
+	_keyboardEffectSprite->Init();
 }
 void Track::Dinit()
 {
@@ -51,6 +60,7 @@ void Track::Update(int deltaTime)
 	UpdateMeasureIndex(deltaTime);
 	UpdateMeasureNoteList(deltaTime);
 	_boomSprite->Update(deltaTime);
+	_keyboardEffectSprite->Update(deltaTime);
 }
 void Track::Render()
 {
@@ -64,6 +74,7 @@ void Track::Render()
 		}
 	}
 	_boomSprite->Render();
+	_keyboardEffectSprite->Render();
 }
 void Track::SetJudgeTick()
 {
@@ -170,6 +181,7 @@ void Track::UpdateKeyEvent()
 
 	if (InputManager::GetInstance()->IsKeyDown(_trackInfo))//eKeyStatus::DOWN == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
+		_keyboardEffectSprite->Play();
 		printf("%d key Down!\n", _trackInfo);
 
 		int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
@@ -224,6 +236,7 @@ void Track::UpdateKeyEvent()
 	}
 	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
+		_keyboardEffectSprite->Stop();
 		printf("%d key Up!\n", _trackInfo);
 
 		int noteTime = (*itr)->GetNoteTime();
