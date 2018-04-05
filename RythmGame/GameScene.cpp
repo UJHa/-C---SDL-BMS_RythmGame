@@ -117,8 +117,8 @@ void GameScene::Render()
 {
 	_backgroundSprite->Render();
 	_trackListSprite->Render();
-	_collisionSprite->Render();
 	_trackManager->Render();
+	_collisionSprite->Render();
 	_numberFontSprite->Render();
 	for (int i = 0; i < eJudge::NONE; i++)
 	{

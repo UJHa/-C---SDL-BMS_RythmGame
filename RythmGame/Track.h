@@ -25,6 +25,7 @@ private:
 
 	Sprite* _boomSprite;
 	KeyboardEffectSprite* _keyboardEffectSprite;
+	KeyboardEffectSprite* _trackEffectSprite;
 
 	map<int, list<Note*>> _measureNoteList;
 	eJudge _judge;
