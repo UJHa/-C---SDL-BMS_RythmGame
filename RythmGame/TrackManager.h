@@ -4,9 +4,6 @@
 #include<string>
 #include "Track.h"
 using namespace std;
-class Font;
-class Wav;
-struct Mix_Chunk;
 //key
 enum eTrackNum
 {
@@ -25,6 +22,7 @@ class TrackManager
 {
 private:
 	map<int, Track*> _trackList;
+	Sprite* _collisionSprite;
 public:
 	TrackManager();
 	~TrackManager();

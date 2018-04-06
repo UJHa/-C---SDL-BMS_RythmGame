@@ -11,7 +11,7 @@ int main(int argc, char* argv[])
 	int winHeight = GameSystem::GetInstance()->GetHeight();
 	//set sdl
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_AUDIO);
-	SDL_Window* sdlWindow = SDL_CreateWindow("Title name", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, winWidth, winHeight, SDL_WINDOW_OPENGL);
+	SDL_Window* sdlWindow = SDL_CreateWindow("BMS RythmGame", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, winWidth, winHeight, SDL_WINDOW_OPENGL);
 	SDL_Renderer* sdlRenderer = SDL_CreateRenderer(sdlWindow, 0, 0);
 	
 	//set font
@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
 	int oldframe = 0;
 	int curtick = SDL_GetTicks();
 	int oldtick = curtick;
+	bool isPlay = true;
 	while (1)
 	{
 		curtick = SDL_GetTicks();
@@ -56,6 +57,10 @@ int main(int argc, char* argv[])
 						quitEvent.type = SDL_QUIT;
 						SDL_PushEvent(&quitEvent);
 					}
+					if (sdlEvent.key.keysym.sym == SDLK_p)
+					{
+						isPlay = !isPlay;
+					}
 					SceneManager::GetInstance()->KeyUp(sdlEvent.key.keysym.sym);
 				}
 				if (SDL_KEYDOWN == sdlEvent.type)
@@ -63,13 +68,16 @@ int main(int argc, char* argv[])
 					SceneManager::GetInstance()->KeyDown(sdlEvent.key.keysym.sym);
 				}
 			}
-			SceneManager::GetInstance()->Update(deltaTime);
+			if (isPlay)
+			{
+				SceneManager::GetInstance()->Update(deltaTime);
 
-			SDL_RenderClear(sdlRenderer);
+				SDL_RenderClear(sdlRenderer);
 	
-			SceneManager::GetInstance()->Render();
+				SceneManager::GetInstance()->Render();
 
-			SDL_RenderPresent(sdlRenderer);
+				SDL_RenderPresent(sdlRenderer);
+			}
 		}
 	}
 	return 0;

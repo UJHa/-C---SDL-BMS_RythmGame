@@ -13,7 +13,7 @@ private:
 	TrackManager* _trackManager;
 	int _gameDuration;
 	Sprite* _trackListSprite;
-	Sprite* _collisionSprite;
+	//Sprite* _collisionSprite;
 	NumbersSprite* _numberFontSprite;
 public:
 	GameScene();

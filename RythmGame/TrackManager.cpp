@@ -11,6 +11,7 @@
 TrackManager::TrackManager()
 {
 	_trackList.clear();
+	_collisionSprite = NULL;
 }
 TrackManager::~TrackManager()
 {
@@ -18,6 +19,8 @@ TrackManager::~TrackManager()
 void TrackManager::Init()
 {
 	TrackListInit();
+	_collisionSprite = new Sprite("collisionspr.csv");
+	_collisionSprite->Init();
 }
 void TrackManager::Dinit()
 {
@@ -26,6 +29,11 @@ void TrackManager::Dinit()
 		(*it).second->Dinit();
 	}
 	_trackList.clear();
+	if (NULL != _collisionSprite)
+	{
+		delete _collisionSprite;
+		_collisionSprite = NULL;
+	}
 }
 void TrackManager::Update(int deltaTime)
 {
@@ -33,9 +41,11 @@ void TrackManager::Update(int deltaTime)
 	{
 		(*it).second->Update(deltaTime);
 	}
+	_collisionSprite->Update(deltaTime);
 }
 void TrackManager::Render()
 {
+	_collisionSprite->Render();
 	for (map<int, Track*>::iterator it = _trackList.begin(); it != _trackList.end(); it++)
 	{
 		(*it).second->Render();

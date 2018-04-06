@@ -196,7 +196,7 @@ bool SettingGamePlay::ParsingBMS(int deltaTime)
 			_channelNum = atoi(measureChannelInfo.substr(3, 2).c_str());
 			if (placeNoteInfo.compare("00"))
 			{
-				if (1 == atoi(measureChannelInfo.substr(3, 2).c_str()))
+				if (1 == _channelNum)
 				{
 					//autoWav
 					float measureSecSet = (float)_measureNum * _measureStandardTimeSec + GetGameLoadTime();
@@ -211,13 +211,30 @@ bool SettingGamePlay::ParsingBMS(int deltaTime)
 						placeNoteInfo = placeNoteInfo.substr(2, placeNoteInfo.length());
 					}
 				}
-				else if (3 == atoi(measureChannelInfo.substr(3, 2).c_str()))
+				else if (2 == _channelNum)
 				{
+					//마디 길이 조정
+				}
+				else if (3 == _channelNum)
+				{
+					//bpm 변경
+				}
+				else if (4 == _channelNum)
+				{
+					//BGA
 
 				}
-				else if (4 != atoi(measureChannelInfo.substr(3, 2).c_str()))
+				else if (5 == _channelNum)
 				{
-					//note
+					//Layer BGA 색상 변경
+				}
+				else if (6 == _channelNum)
+				{
+					//미스 BGA 변경
+				}
+				else	//11 to 19
+				{
+					//player 노트 정보
 					_noteInfoMap[atoi(measureChannelInfo.substr(4, 1).c_str())].push_back(*_itBms);
 				}
 			}

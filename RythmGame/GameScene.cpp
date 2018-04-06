@@ -13,7 +13,6 @@ GameScene::GameScene()
 {
 	_backgroundSprite = NULL;
 	_trackListSprite = NULL;
-	_collisionSprite = NULL;
 	_trackManager = NULL;
 	_gameDuration = 0;
 }
@@ -30,8 +29,6 @@ void GameScene::Init()
 	_trackListSprite = new Sprite("trackListspr.csv");
 	_trackListSprite->Init();
 
-	_collisionSprite = new Sprite("collisionspr.csv");
-	_collisionSprite->Init();
 	_trackManager = new TrackManager();
 	_trackManager->Init();
 
@@ -75,11 +72,6 @@ void GameScene::Dinit()
 		delete _trackListSprite;
 		_trackListSprite = NULL;
 	}
-	if (NULL != _collisionSprite)
-	{
-		delete _collisionSprite;
-		_collisionSprite = NULL;
-	}
 	if (NULL != _numberFontSprite)
 	{
 		delete _numberFontSprite;
@@ -90,7 +82,6 @@ void GameScene::Update(int deltaTime)
 {
 	_backgroundSprite->Update(deltaTime);
 	_trackListSprite->Update(deltaTime);
-	_collisionSprite->Update(deltaTime);
 	_numberFontSprite->Update(deltaTime);
 	for (int i = 0; i < eJudge::NONE; i++)
 	{
@@ -118,7 +109,6 @@ void GameScene::Render()
 	_backgroundSprite->Render();
 	_trackListSprite->Render();
 	_trackManager->Render();
-	_collisionSprite->Render();
 	_numberFontSprite->Render();
 	for (int i = 0; i < eJudge::NONE; i++)
 	{

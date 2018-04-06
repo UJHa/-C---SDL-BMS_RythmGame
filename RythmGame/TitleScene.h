@@ -9,6 +9,7 @@ class TitleScene : public Scene
 {
 private:
 	Sprite* _backgroundSprite;
+	Sprite* _selectBoxSprite;
 public:
 	TitleScene();
 	~TitleScene();

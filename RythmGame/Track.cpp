@@ -1,16 +1,18 @@
-#include <stdlib.h>
 #include<stdio.h>
 #include<string.h>
 #include "Track.h"
 #include "Note.h"
 #include "SettingGamePlay.h"
-#include "GameSystem.h"
 #include "Sprite.h"
-#include "Font.h"
 #include "InputManager.h"
 #include "KeyboardEffectSprite.h"
 Track::Track(eTrackNum trackInfo, string noteSpriteName)
 {
+	_deleteNoteList.clear();
+	_boomSprite = NULL;
+	_keyboardEffectSprite = NULL;
+	_trackEffectSprite = NULL;
+
 	_measureNoteList.clear();
 	_trackInfo = trackInfo;
 	_judge = eJudge::NONE;
@@ -24,7 +26,6 @@ Track::~Track()
 }
 void Track::Init()
 {
-	//_isKeyDown = false;
 	SetJudgeTick(); 
 	SetNotePlace();
 	
@@ -33,9 +34,6 @@ void Track::Init()
 	_boomSprite = new Sprite(boomSpriteName);
 	_boomSprite->Init();
 	 
-	/*_keyboardEffectSprite = new KeyboardEffectSprite("keyboardspr.csv");
-	_keyboardEffectSprite->Init();
-	_keyboardEffectSprite->SetPosition(225, 684);*/
 	char keyboardSpriteName[256];
 	sprintf(keyboardSpriteName, "keyboardspr%d.csv", _trackInfo);
 	_keyboardEffectSprite = new KeyboardEffectSprite(keyboardSpriteName);
@@ -48,15 +46,29 @@ void Track::Init()
 }
 void Track::Dinit()
 {
+	for (list<Note*>::iterator itr = _deleteNoteList.begin();
+		itr != _deleteNoteList.end();
+		itr++)
 	{
-		for (list<Note*>::iterator itr = _deleteNoteList.begin();
-			itr != _deleteNoteList.end();
-			itr++)
-		{
-			(*itr)->Dinit();
-			delete (*itr);
-		}
-		_deleteNoteList.clear();
+		(*itr)->Dinit();
+		delete (*itr);
+	}
+	_deleteNoteList.clear();
+
+	if (NULL != _boomSprite)
+	{
+		delete _boomSprite;
+		_boomSprite = NULL;
+	}
+	if (NULL != _keyboardEffectSprite)
+	{
+		delete _keyboardEffectSprite;
+		_keyboardEffectSprite = NULL;
+	}
+	if (NULL != _trackEffectSprite)
+	{
+		delete _trackEffectSprite;
+		_trackEffectSprite = NULL;
 	}
 }
 void Track::Update(int deltaTime)
@@ -183,14 +195,14 @@ void Track::UpdateKeyEvent()
 			break;
 	}
 	list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-	if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
-		return;
 
 	if (InputManager::GetInstance()->IsKeyDown(_trackInfo))//eKeyStatus::DOWN == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
+		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
+			return;
+		printf("%d down\n",_trackInfo);
 		_keyboardEffectSprite->Play();
 		_trackEffectSprite->Play();
-		printf("%d key Down!\n", _trackInfo);
 
 		int noteTime = (*itr)->GetNoteTime() + (*itr)->GetlengthTick();
 		_judge = ChangeJudgeText(noteTime);
@@ -225,8 +237,9 @@ void Track::UpdateKeyEvent()
 	}
 	else if (InputManager::GetInstance()->IsKeyHold(_trackInfo))//eKeyStatus::HOLD == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
-		printf("%d key Hold!\n", _trackInfo);
-
+		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
+			return;
+		printf("%d hold\n", _trackInfo);
 		if ((*itr)->IsJudge())	//롱노트 status일때 코드
 		{
 			_judge = eJudge::GREAT;
@@ -244,10 +257,12 @@ void Track::UpdateKeyEvent()
 	}
 	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
 	{
+		printf("%d up\n", _trackInfo);
 		_keyboardEffectSprite->Stop();
 		_trackEffectSprite->Stop();
-		printf("%d key Up!\n", _trackInfo);
 
+		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
+			return;
 		int noteTime = (*itr)->GetNoteTime();
 		if ((*itr)->IsJudge())
 		{
@@ -276,6 +291,8 @@ void Track::UpdateKeyEvent()
 	}
 	else
 	{
+		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
+			return;
 		if (_judgeBadEndTick <= (*itr)->GetNoteTime())
 		{
 			_judge = eJudge::POOR;

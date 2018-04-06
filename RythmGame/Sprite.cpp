@@ -92,9 +92,6 @@ void Sprite::Init()
 		Texture* texture = (*itr);
 		_textureFrames.push_back(texture);
 	}
-	/*list<Texture*>::iterator itr = textureFramesList.begin();
-	_x -= (*itr)->GetRenderWidth() * _pivotX;
-	_y -= (*itr)->GetRenderHeight() * _pivotY;*/
 	SetPosition(_x, _y);
 }
 void Sprite::Render()

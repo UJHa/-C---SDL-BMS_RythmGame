@@ -9,6 +9,7 @@
 TitleScene::TitleScene()
 {
 	_backgroundSprite = NULL;
+	_selectBoxSprite = NULL;
 	_musicList = NULL;
 }
 
@@ -20,8 +21,13 @@ void TitleScene::Init()
 	_backgroundSprite = new Sprite("backgroundLogospr.csv");
 	_backgroundSprite->Init();
 
+	_selectBoxSprite = new Sprite("selectBoxspr.csv");
+	_selectBoxSprite->Init();
+
 	_musicList = new MusicList();
 	_musicList->Init();
+
+
 }
 void TitleScene::Dinit()
 {
@@ -30,6 +36,11 @@ void TitleScene::Dinit()
 		delete _backgroundSprite;
 		_backgroundSprite = NULL;
 	}
+	if (NULL != _selectBoxSprite)
+		{
+			delete _selectBoxSprite;
+			_selectBoxSprite = NULL;
+		}
 	if (NULL != _musicList)
 	{
 		delete _musicList;
@@ -39,11 +50,13 @@ void TitleScene::Dinit()
 void TitleScene::Update(int deltaTime)
 {
 	_backgroundSprite->Update(deltaTime);
+	_selectBoxSprite->Update(deltaTime);
 }
 void TitleScene::Render()
-{
+{	
 	_backgroundSprite->Render();
 	_musicList->Render();
+	_selectBoxSprite->Render();
 }
 void TitleScene::KeyUp(int keyCode)
 {
