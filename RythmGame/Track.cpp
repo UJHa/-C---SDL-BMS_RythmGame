@@ -195,12 +195,12 @@ void Track::UpdateKeyEvent()
 			break;
 	}
 	list<Note*>::iterator itr = _measureNoteList[startMeasureIndex].begin();
-
-	if (InputManager::GetInstance()->IsKeyDown(_trackInfo))//eKeyStatus::DOWN == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	
+	int keycode = InputManager::GetInstance()->GetKeyCode(_trackInfo);
+	if (InputManager::GetInstance()->IsKeyDown(keycode))
 	{
 		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
 			return;
-		printf("%d down\n",_trackInfo);
 		_keyboardEffectSprite->Play();
 		_trackEffectSprite->Play();
 
@@ -235,11 +235,10 @@ void Track::UpdateKeyEvent()
 			_measureNoteList[startMeasureIndex].remove(*itr);
 		}
 	}
-	else if (InputManager::GetInstance()->IsKeyHold(_trackInfo))//eKeyStatus::HOLD == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	else if (InputManager::GetInstance()->IsKeyHold(keycode))
 	{
 		if (itr == _measureNoteList[startMeasureIndex].end())	//null 체크
 			return;
-		printf("%d hold\n", _trackInfo);
 		if ((*itr)->IsJudge())	//롱노트 status일때 코드
 		{
 			_judge = eJudge::GREAT;
@@ -255,9 +254,8 @@ void Track::UpdateKeyEvent()
 			_judge = eJudge::NONE;
 		}
 	}
-	else if (InputManager::GetInstance()->IsKeyUp(_trackInfo))//eKeyStatus::UP == InputManager::GetInstance()->GetKeyStatus(_trackInfo))
+	else if (InputManager::GetInstance()->IsKeyUp(keycode))
 	{
-		printf("%d up\n", _trackInfo);
 		_keyboardEffectSprite->Stop();
 		_trackEffectSprite->Stop();
 

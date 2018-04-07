@@ -66,12 +66,3 @@ void SceneManager::Render()
 {
 	_scene->Render();
 }
-
-void SceneManager::KeyUp(int keyCode)
-{
-	_scene->KeyUp(keyCode);
-}
-void SceneManager::KeyDown(int keyCode)
-{
-	_scene->KeyDown(keyCode);
-}

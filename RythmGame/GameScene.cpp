@@ -117,9 +117,9 @@ void GameScene::Render()
 }
 void GameScene::KeyDown(int keyCode)
 {
-	InputManager::GetInstance()->KeyDown(keyCode);
+	//InputManager::GetInstance()->KeyDown(keyCode);
 }
 void GameScene::KeyUp(int keyCode)
 {
-	InputManager::GetInstance()->KeyUp(keyCode);
+	//InputManager::GetInstance()->KeyUp(keyCode);
 }

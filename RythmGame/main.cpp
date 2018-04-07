@@ -1,10 +1,11 @@
 #include<SDL.h>
-#include "SDL_image.h"
-#include "GameSystem.h"
-#include"SDL_ttf.h"
 #include<stdio.h>
 #include<stdlib.h>
-#include "SceneManager.h"
+#include"SDL_image.h"
+#include"GameSystem.h"
+#include"SDL_ttf.h"
+#include"SceneManager.h"
+#include"InputManager.h"
 int main(int argc, char* argv[])
 {
 	int winWidth = GameSystem::GetInstance()->GetWidth();
@@ -48,25 +49,17 @@ int main(int argc, char* argv[])
 			{
 				if (SDL_QUIT == sdlEvent.type)
 					break;
-
-				if (SDL_KEYUP == sdlEvent.type)
-				{
-					if (sdlEvent.key.keysym.sym == SDLK_ESCAPE)
-					{
-						SDL_Event quitEvent;
-						quitEvent.type = SDL_QUIT;
-						SDL_PushEvent(&quitEvent);
-					}
-					if (sdlEvent.key.keysym.sym == SDLK_p)
-					{
-						isPlay = !isPlay;
-					}
-					SceneManager::GetInstance()->KeyUp(sdlEvent.key.keysym.sym);
-				}
-				if (SDL_KEYDOWN == sdlEvent.type)
-				{
-					SceneManager::GetInstance()->KeyDown(sdlEvent.key.keysym.sym);
-				}
+				InputManager::GetInstance()->UpdateInput(sdlEvent);
+			}
+			if (InputManager::GetInstance()->IsKeyUp(SDLK_ESCAPE))
+			{
+				SDL_Event quitEvent;
+				quitEvent.type = SDL_QUIT;
+				SDL_PushEvent(&quitEvent);
+			}
+			if (InputManager::GetInstance()->IsKeyUp(SDLK_p))
+			{
+				isPlay = !isPlay;
 			}
 			if (isPlay)
 			{

@@ -15,5 +15,4 @@ public:
 	void Dinit();
 	void Update(int deltaTime);
 	void Render();
-	void KeyUp(int keyCode);
 };

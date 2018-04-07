@@ -1,10 +1,11 @@
-#include "LogoScene.h"
+#include"LogoScene.h"
 #include<stdio.h>
 #include<SDL.h>
 #include"SceneManager.h"
 #include"GameSystem.h"
-#include "Font.h"
-#include "Sprite.h"
+#include"Font.h"
+#include"Sprite.h"
+#include"InputManager.h"
 LogoScene::LogoScene()
 {
 	_backgroundSprite = NULL;
@@ -36,6 +37,11 @@ void LogoScene::Dinit()
 }
 void LogoScene::Update(int deltaTime)
 {
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_SPACE))
+	{
+		SceneManager::GetInstance()->ChangeScene(eScene::SCENE_TITLE);
+		return;
+	}
 	_backgroundSprite->Update(deltaTime);
 	_textFont->Update(deltaTime);
 }
@@ -43,15 +49,4 @@ void LogoScene::Render()
 {
 	_backgroundSprite->Render();
 	_textFont->Render();
-}
-void LogoScene::KeyUp(int keyCode)
-{
-	switch (keyCode)
-	{
-	case SDLK_SPACE:
-		SceneManager::GetInstance()->ChangeScene(eScene::SCENE_TITLE);
-		break;
-	default:
-		break;
-	}
 }

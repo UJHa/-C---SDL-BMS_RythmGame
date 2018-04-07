@@ -12,7 +12,4 @@ public:
 	virtual void Dinit();
 	virtual void Update(int deltaTime);
 	virtual void Render();
-	//Input
-	virtual void KeyDown(int keyCode);
-	virtual void KeyUp(int keyCode);
 };

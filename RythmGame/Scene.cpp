@@ -22,11 +22,3 @@ void Scene::Render()
 {
 
 }
-void Scene::KeyDown(int keyCode)
-{
-
-}
-void Scene::KeyUp(int keyCode)
-{
-
-}

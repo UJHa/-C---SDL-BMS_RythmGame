@@ -1,10 +1,11 @@
-#include "ResultScene.h"
+#include"ResultScene.h"
 #include<stdio.h>
 #include"SceneManager.h"
 #include"GameSystem.h"
 #include<SDL.h>
-#include "Font.h"
-#include "SettingGamePlay.h"
+#include"Font.h"
+#include"SettingGamePlay.h"
+#include"InputManager.h"
 ResultScene::ResultScene()
 {
 	_fontList.clear();
@@ -114,27 +115,8 @@ void ResultScene::Dinit()
 }
 void ResultScene::Update(int deltaTime)
 {
-	_backgroundSprite->Update(deltaTime);
-	for (int i = 0; i < _fontList.size(); i++)
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_SPACE))
 	{
-		_fontList[i]->Update(deltaTime);
-	}
-	_focusFont->Update(deltaTime);
-}
-void ResultScene::Render()
-{
-	_backgroundSprite->Render();
-	for (int i = 0; i < _fontList.size(); i++)
-	{
-		_fontList[i]->Render();
-	}
-	_focusFont->Render();
-}
-void ResultScene::KeyUp(int keyCode)
-{
-	switch (keyCode)
-	{
-	case SDLK_SPACE:
 		SettingGamePlay::GetInstance()->Dinit();
 		switch (_focusCheck)
 		{
@@ -154,22 +136,38 @@ void ResultScene::KeyUp(int keyCode)
 			printf("QUIT\n");
 			break;
 		}
-		break;
-	case SDLK_LEFT:
+		return;
+	}
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_LEFT))
+	{
 		if (_focusCheck > eSelectTextType::REPLAY)
 		{
 			_focusFont->MovePosition(-300, 0);
 			_focusCheck = eSelectTextType(_focusCheck - 1);
 		}
-		break;
-	case SDLK_RIGHT:
+	}
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_RIGHT))
+	{
 		if (_focusCheck < eSelectTextType::QUIT)
 		{
 			_focusFont->MovePosition(300, 0);
 			_focusCheck = eSelectTextType(_focusCheck + 1);
 		}
-		break;
-	default:
-		break;
 	}
+
+	_backgroundSprite->Update(deltaTime);
+	for (int i = 0; i < _fontList.size(); i++)
+	{
+		_fontList[i]->Update(deltaTime);
+	}
+	_focusFont->Update(deltaTime);
+}
+void ResultScene::Render()
+{
+	_backgroundSprite->Render();
+	for (int i = 0; i < _fontList.size(); i++)
+	{
+		_fontList[i]->Render();
+	}
+	_focusFont->Render();
 }

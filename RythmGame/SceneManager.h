@@ -24,7 +24,4 @@ public:
 	void ChangeScene(eScene scene);
 	void Update(int deltaTime);
 	void Render();
-
-	void KeyUp(int keyCode);
-	void KeyDown(int keyCode);
 };

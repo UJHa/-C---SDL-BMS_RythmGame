@@ -1,11 +1,12 @@
-#include <stdio.h>
-#include "TitleScene.h"
-#include "GameSystem.h"
-#include "SceneManager.h"
+#include<stdio.h>
+#include"TitleScene.h"
+#include"GameSystem.h"
+#include"SceneManager.h"
 #include<SDL.h>
-#include "Font.h"
-#include "SettingGamePlay.h"
-#include "MusicList.h"
+#include"Font.h"
+#include"SettingGamePlay.h"
+#include"MusicList.h"
+#include"InputManager.h"
 TitleScene::TitleScene()
 {
 	_backgroundSprite = NULL;
@@ -49,6 +50,29 @@ void TitleScene::Dinit()
 }
 void TitleScene::Update(int deltaTime)
 {
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_SPACE))
+	{
+		if (_musicList->IsExtensionBMS()) {
+			SettingGamePlay::GetInstance()->ResetData(_musicList->GetFileRoute(), _musicList->GetNameBMS());
+			SceneManager::GetInstance()->ChangeScene(eScene::SCENE_LOADING);
+			return;
+		}
+		_musicList->SelectEvent();
+	}
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_UP))
+	{
+		if (_musicList->IncreaseIterator())
+		{
+			_musicList->SpriteListMovePosition(0, -120);
+		}
+	}
+	if (InputManager::GetInstance()->IsKeyUp(SDLK_DOWN))
+	{
+		if (_musicList->DecreaseIterator())
+		{
+			_musicList->SpriteListMovePosition(0, 120);
+		}
+	}
 	_backgroundSprite->Update(deltaTime);
 	_selectBoxSprite->Update(deltaTime);
 }
@@ -57,30 +81,4 @@ void TitleScene::Render()
 	_backgroundSprite->Render();
 	_musicList->Render();
 	_selectBoxSprite->Render();
-}
-void TitleScene::KeyUp(int keyCode)
-{
-	switch (keyCode)
-	{
-	case SDLK_SPACE:
-		if (_musicList->IsExtensionBMS()) {
-			SettingGamePlay::GetInstance()->ResetData(_musicList->GetFileRoute(), _musicList->GetNameBMS());
-			SceneManager::GetInstance()->ChangeScene(eScene::SCENE_LOADING);
-			break;
-		}
-		_musicList->SelectEvent();
-		break;
-	case SDLK_UP:
-		if (_musicList->IncreaseIterator())
-		{
-			_musicList->SpriteListMovePosition(0, -120);
-		}
-		break;
-	case SDLK_DOWN:
-		if (_musicList->DecreaseIterator())
-		{
-			_musicList->SpriteListMovePosition(0, 120);
-		}
-		break;
-	}
 }

@@ -3,12 +3,13 @@
 using namespace std;
 enum eKeyStatus
 {
+	KEY_NONE,
 	DOWN,
 	HOLD,
 	UP,
-	KEY_NONE,
 };
 enum eTrackNum;
+union SDL_Event;
 class InputManager
 {
 private:
@@ -19,19 +20,14 @@ private:
 	InputManager();
 public:
 	~InputManager();
-//public:
-//	void Update(int deltaTime);
-//	void Render();
-//
 private:
-	map<int, eTrackNum> _trackKeyMap;
-	map<eTrackNum, eKeyStatus> _trackKeyStatus;
+	map<eTrackNum, int> _trackKeyMap;
+	map<int, eKeyStatus> _keyStatus;
 public:
 	void Init();
-	void KeyDown(int keyCode);
-	void KeyUp(int keyCode);
-	eKeyStatus GetKeyStatus(eTrackNum trackNum);
-	bool IsKeyDown(eTrackNum trackNum);
-	bool IsKeyHold(eTrackNum trackNum);
-	bool IsKeyUp(eTrackNum trackNum);
+	bool IsKeyDown(int keycode);
+	bool IsKeyHold(int keycode);
+	bool IsKeyUp(int keycode);
+	int GetKeyCode(eTrackNum trackNum);
+	void UpdateInput(SDL_Event sdlEvent);
 };

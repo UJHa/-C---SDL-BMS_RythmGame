@@ -126,7 +126,7 @@ bool SettingGamePlay::BMSFileRead(int deltaTime)
 		if (NULL == record)
 		{
 			fclose(_bmsFile);
-			printf("BMSFileRead 다 읽었어양!\n");
+			printf("BMSFileRead 다 읽음!\n");
 			_itBms = _bmsInfo.begin();
 			_isFileReadFinish = true;
 			return true;
@@ -145,7 +145,7 @@ bool SettingGamePlay::BMSFileRead(int deltaTime)
 		int oneTimeDelta = SDL_GetTicks() - startTick;
 		if (deltaTime <= oneTimeDelta)	//16이 델타값
 		{
-			printf("BMSFileRead 아직 읽는중에양\n");
+			printf("BMSFileRead 아직 읽는중\n");
 			return false;
 		}
 	}
@@ -180,7 +180,7 @@ bool SettingGamePlay::ParsingBMS(int deltaTime)
 				//bms, gameTimeTick 세팅할 곳
 				_gamePlayTime = atoi(_bmsInfo[_bmsInfo.size() - 1].substr(0, 3).c_str()) * _measureStandardTimeSec;
 			}
-			float trackHeight = GameSystem::GetInstance()->GetHeight()*_gamePlayTime * 1.0f;	//메인 * noteSpeed
+			float trackHeight = GameSystem::GetInstance()->GetHeight()*_gamePlayTime * 1.0f;	//전체 트랙길이 * 속도배수(noteSpeed)
 			SetGameTimeTick(_gamePlayTime);
 			SetTrackHeight(trackHeight);
 		}
@@ -242,7 +242,7 @@ bool SettingGamePlay::ParsingBMS(int deltaTime)
 		_itBms++;
 		if (_itBms == _bmsInfo.end())
 		{
-			printf("ParsingBMS 다 읽었어양!\n");
+			printf("ParsingBMS 다 읽음!\n");
 			_isFileReadFinish = false;
 			return true;
 		}
